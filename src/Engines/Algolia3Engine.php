@@ -34,28 +34,25 @@ class Algolia3Engine extends AlgoliaEngine
      */
     public static function make(array $config, array $headers, bool $softDelete = false)
     {
-        $config = Algolia3SearchConfig::create([
-            'appId' => $config['id'],
-            'apiKey' => $config['secret'],
-        ])->setDefaultHeaders($headers);
+        $config = Algolia3SearchConfig::create($config['id'], $config['secret'])->setDefaultHeaders($headers);
 
-        if (is_int($connectTimeout = $config['connect_timeout'])) {
-            $configuration->setConnectTimeout($connectTimeout);
+        if (is_int($connectTimeout = $config->getConnectTimeout())) {
+            $config->setConnectTimeout($connectTimeout);
         }
 
-        if (is_int($readTimeout = $config['read_timeout'])) {
-            $configuration->setReadTimeout($readTimeout);
+        if (is_int($readTimeout = $config->getReadTimeout())) {
+            $config->setReadTimeout($readTimeout);
         }
 
-        if (is_int($writeTimeout = $config['write_timeout'])) {
-            $configuration->setWriteTimeout($writeTimeout);
+        if (is_int($writeTimeout = $config->getWriteTimeout())) {
+            $config->setWriteTimeout($writeTimeout);
         }
 
-        if (is_int($batchSize = $config['batch_size'])) {
-            $configuration->setBatchSize($batchSize);
+        if (is_int($batchSize = $config->getBatchSize())) {
+            $config->setBatchSize($batchSize);
         }
 
-        return new static(Algolia3SearchClient::createWithConfig($configuration), $softDelete);
+        return new static(Algolia3SearchClient::createWithConfig($config), $softDelete);
     }
 
     /**
